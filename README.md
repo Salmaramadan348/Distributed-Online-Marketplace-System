@@ -68,4 +68,4 @@ Full-stack marketplace platform with a distributed MongoDB setup, real-time chat
 - Frontend: npm start, npm run build, npm test
 
 ## Notes
-- Set HF_API_KEY in your environment. Do not commit secrets.
+- Get a Hugging Face key and Set HF_API_KEY in your environment.
