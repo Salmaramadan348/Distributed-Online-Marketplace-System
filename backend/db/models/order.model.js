@@ -11,14 +11,12 @@ const orderSchema = new mongoose.Schema({
 
   totalPrice: { type: Number, required: true },
 
-  // 🔥 FIXED STATUS
   status: {
     type: String,
     enum: ['pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled'],
     default: 'pending'
   },
 
-  // 🔥 FIXED PAYMENT METHOD
   paymentMethod: {
     type: String,
     enum: ['COD', 'Credit Card', 'WALLET'],
