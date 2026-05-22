@@ -1,13 +1,5 @@
-<<<<<<< HEAD
-node_modules/
-backend/node_modules/
-frontend/node_modules/
-backend/.env
-.env
-=======
 backend/.env
 backend/.env.local
 backend/.env.development.local
 backend/.env.test.local
 backend/.env.production.local
->>>>>>> origin/User_Modified
