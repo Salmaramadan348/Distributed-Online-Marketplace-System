@@ -25,6 +25,13 @@ const createOrder = async (req, res) => {
     for (let item of cart.items) {
       if (!item.productId || !item.productId.price) continue;
 
+      //Prevent user from checking out with their own items
+      if (item.productId.owner.toString() === userId.toString()) {
+        return res.status(400).json({ 
+          message: `You cannot buy your own product: ${item.productId.title}. Please remove it from your cart.` 
+        });
+      }
+
       totalPrice += Number(item.productId.price) * Number(item.quantity);
     }
 

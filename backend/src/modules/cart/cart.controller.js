@@ -1,11 +1,19 @@
 import { cartModel } from "../../../db/models/cart.model.js";
 import { inventoryModel } from "../../../db/models/inventory.model.js";
-
+import { productModel } from "../../../db/models/product.model.js";
 const addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
     const userId = req.user._id;
+    const product = await productModel.findById(productId);
+    
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
+    if (product.owner.toString() === userId.toString()) {
+      return res.status(400).json({ message: "You cannot add your own product to the cart" });
+    }
     // 1. check inventory
     const inventory = await inventoryModel.findOne({ productId });
 

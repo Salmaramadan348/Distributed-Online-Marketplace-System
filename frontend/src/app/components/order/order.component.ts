@@ -18,7 +18,7 @@ export class OrderComponent implements OnInit {
   constructor(private _OrderService: OrderService,private _CartService:CartService,private router:Router) {}
 
   ngOnInit(): void {
-  this.orders = this._CartService.getCheckoutItems(); 
+  this.orders = this._CartService.getCheckoutItems();
 }
 
 addItem() {
@@ -39,8 +39,8 @@ getorder(){
 }
 getOrders() {
     this._OrderService.getAllOrders().subscribe({
-      next: (res: any) => { 
-        console.log(res); 
+      next: (res: any) => {
+        console.log(res);
         this.orders = res.cart || [];
       },
       error: (err) => console.log(err),
@@ -72,10 +72,18 @@ sendData() {
     this._OrderService.postOrder(orderData).subscribe({
       next: (res) => {
         console.log('Order created:', res);
-        this._CartService.deleteAllCart(); 
+        this._CartService.deleteAllCart();
         this.router.navigate(['/orderDetails']);
       },
-      error: (err) => console.log(err),
+      error: (err) => {
+  console.log(err);
+
+  if (err.status === 400) {
+    alert("❌ Insufficient balance to complete this order");
+  } else {
+    alert("❌ Something went wrong, please try again");
+  }
+},
       complete: () => console.log("Order creation complete")
     });
   } else {
@@ -88,7 +96,7 @@ sendData() {
     this._OrderService.deleteOrder(Id).subscribe({
       next: (res) => {
         console.log('Order deleted:', res);
-        this.getOrders(); 
+        this.getOrders();
       },
       error: (err) => console.log(err),
       complete: () => console.log("Delete complete")

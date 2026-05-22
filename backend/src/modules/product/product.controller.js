@@ -1,6 +1,7 @@
 import { productModel } from "../../../db/models/product.model.js";
 import { inventoryModel } from "../../../db/models/inventory.model.js";
 import { userModel } from "../../../db/models/user.model.js";
+import{isAdmin} from "../user/user.controller.js"
 
 const getProduct = async (req, res) => {
   try {
@@ -210,7 +211,14 @@ const buyProduct = async (req, res) => {
       });
     }
 
-    // 2. add to user's purchased items with full data
+    // Prevent the user from buying their own product
+    if (product.owner.toString() === req.user._id.toString()) {
+      return res.status(400).json({
+        message: "You cannot buy your own product."
+      });
+    }
+
+    // add to user's purchased items with full data
     await userModel.findByIdAndUpdate(
       req.user._id,
       {
@@ -247,7 +255,7 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    if (product.owner.toString() !== req.user._id.toString()) {
+    if (product.owner.toString() !== req.user._id.toString()&& !isAdmin(req.user.email)) {
       return res.status(403).json({ message: "Not your product" });
     }
 
@@ -301,7 +309,7 @@ const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    if (product.owner.toString() !== req.user._id.toString()) {
+    if (product.owner.toString() !== req.user._id.toString() && !isAdmin(req.user.email)) {
       return res.status(403).json({ message: "Not your product" });
     }
 

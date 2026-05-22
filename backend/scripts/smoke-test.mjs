@@ -366,7 +366,7 @@ async function run() {
       userName: "Smoke Seller",
       email: sellerEmail,
       password: sellerPassword,
-      role: "seller",
+      role: "user", //Updated to the unified role
     });
     record("Seed seller user (db)", true, sellerEmail);
 

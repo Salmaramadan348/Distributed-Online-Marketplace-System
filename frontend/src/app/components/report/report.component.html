@@ -7,63 +7,31 @@
   </div>
 
   <!-- ACCESS DENIED -->
-  <div
-    *ngIf="!loading && userRole !== 'admin'"
-    class="rp-state"
-  >
+  <div *ngIf="!loading && userRole !== 'admin'" class="rp-state">
     <span class="rp-state-icon">🔒</span>
-
     <h3>Access Denied</h3>
-
-    <p>
-      Only admin users can access reports.
-    </p>
+    <p>Only admin users can access reports.</p>
   </div>
 
   <!-- ERROR -->
-  <div
-    *ngIf="!loading && error && userRole === 'admin'"
-    class="rp-state"
-  >
+  <div *ngIf="!loading && error && userRole === 'admin'" class="rp-state">
     <span class="rp-state-icon">⚠</span>
-
     <h3>Could not load data</h3>
-
-    <p>
-      Something went wrong while loading the report.
-    </p>
+    <p>Something went wrong while loading the report.</p>
   </div>
 
   <!-- EMPTY -->
   <div
-    *ngIf="
-      !loading &&
-      !error &&
-      userRole === 'admin' &&
-      orders.length === 0 &&
-      transactions.length === 0
-    "
+    *ngIf="!loading && !error && userRole === 'admin' && orders.length === 0 && transactions.length === 0"
     class="rp-state"
   >
     <span class="rp-state-icon">🛒</span>
-
     <h3>No activity yet</h3>
-
-    <p>
-      No orders or transactions have been made
-      in the system yet.
-    </p>
+    <p>No orders or transactions have been made in the system yet.</p>
   </div>
 
   <!-- DASHBOARD -->
-  <div
-    *ngIf="
-      !loading &&
-      !error &&
-      userRole === 'admin'
-    "
-    class="rp-page"
-  >
+  <div *ngIf="!loading && !error && userRole === 'admin'" class="rp-page">
 
     <!-- Header -->
     <header class="rp-header">
@@ -72,20 +40,15 @@
 
       <div>
         <h1>Admin Report</h1>
-
-        <p>
-          Platform-wide orders &amp; transactions
-        </p>
+        <p>Platform-wide orders &amp; transactions</p>
       </div>
 
       <div class="rp-wallet-badge">
 
-        <span class="rp-wallet-label">
-          Total Revenue
-        </span>
+        <span class="rp-wallet-label">Total Revenue</span>
 
         <span class="rp-wallet-val">
-          {{ totalRevenue | number:'1.2-2' }} EGP
+          {{ totalRevenue | number:'1.2-2' }} $
         </span>
 
       </div>
@@ -96,104 +59,52 @@
     <section class="rp-cards">
 
       <div class="rp-card rp-card--1">
-
         <div class="rp-card-icon">📦</div>
-
         <div class="rp-card-body">
-
-          <span class="rp-card-value">
-            {{ totalOrders }}
-          </span>
-
-          <span class="rp-card-label">
-            Total Orders
-          </span>
-
+          <span class="rp-card-value">{{ totalOrders }}</span>
+          <span class="rp-card-label">Total Orders</span>
         </div>
-
       </div>
 
       <div class="rp-card rp-card--2">
-
         <div class="rp-card-icon">💳</div>
-
         <div class="rp-card-body">
-
-          <span class="rp-card-value">
-            {{ totalTransactions }}
-          </span>
-
-          <span class="rp-card-label">
-            Total Transactions
-          </span>
-
+          <span class="rp-card-value">{{ totalTransactions }}</span>
+          <span class="rp-card-label">Total Transactions</span>
         </div>
-
       </div>
 
       <div class="rp-card rp-card--3">
-
         <div class="rp-card-icon">👥</div>
-
         <div class="rp-card-body">
-
-          <span class="rp-card-value">
-            {{ users.length }}
-          </span>
-
-          <span class="rp-card-label">
-            Registered Users
-          </span>
-
+          <span class="rp-card-value">{{ users.length }}</span>
+          <span class="rp-card-label">Registered Users</span>
         </div>
-
       </div>
 
       <div class="rp-card rp-card--4">
-
         <div class="rp-card-icon">💰</div>
-
         <div class="rp-card-body">
-
           <span class="rp-card-value">
-            {{ totalRevenue | number:'1.2-2' }} EGP
+            {{ totalRevenue | number:'1.2-2' }} $
           </span>
-
-          <span class="rp-card-label">
-            Total Revenue
-          </span>
-
+          <span class="rp-card-label">Total Revenue</span>
         </div>
-
       </div>
 
     </section>
 
     <!-- ROW 2 -->
-    <section
-      class="rp-row2"
-      *ngIf="orders.length > 0"
-    >
+    <section class="rp-row2" *ngIf="orders.length > 0">
 
       <!-- STATUS -->
       <div class="rp-panel">
-
-        <h2 class="rp-panel-title">
-          Order Status
-        </h2>
+        <h2 class="rp-panel-title">Order Status</h2>
 
         <div class="rp-donut-wrap">
-
           <svg viewBox="0 0 100 100" class="rp-donut">
 
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill="none"
-              stroke="#1e1e2e"
-              stroke-width="18"
-            />
+            <circle cx="50" cy="50" r="40" fill="none" stroke="#1e1e2e" stroke-width="18"/>
 
             <circle
               *ngFor="let s of statusCounts; let i = index"
@@ -207,88 +118,46 @@
               [attr.stroke-dashoffset]="getDonutOffset(i)"
             />
 
-            <text
-              x="50"
-              y="47"
-              text-anchor="middle"
-              class="rp-donut-big"
-            >
+            <text x="50" y="47" text-anchor="middle" class="rp-donut-big">
               {{ totalOrders }}
             </text>
 
-            <text
-              x="50"
-              y="58"
-              text-anchor="middle"
-              class="rp-donut-small"
-            >
+            <text x="50" y="58" text-anchor="middle" class="rp-donut-small">
               orders
             </text>
 
           </svg>
 
           <div class="rp-donut-legend">
-
-            <div
-              *ngFor="let s of statusCounts"
-              class="rp-legend-row"
-            >
-
-              <span
-                class="rp-legend-dot"
-                [style.background]="s.color"
-              ></span>
-
-              <span class="rp-legend-label">
-                {{ s.label | titlecase }}
-              </span>
-
-              <span class="rp-legend-count">
-                {{ s.count }}
-              </span>
-
+            <div *ngFor="let s of statusCounts" class="rp-legend-row">
+              <span class="rp-legend-dot" [style.background]="s.color"></span>
+              <span class="rp-legend-label">{{ s.label | titlecase }}</span>
+              <span class="rp-legend-count">{{ s.count }}</span>
             </div>
-
           </div>
 
         </div>
-
       </div>
 
       <!-- PAYMENT -->
       <div class="rp-panel">
 
-        <h2 class="rp-panel-title">
-          Payment Methods
-        </h2>
+        <h2 class="rp-panel-title">Payment Methods</h2>
 
         <div class="rp-pay-list">
 
-          <div
-            *ngFor="let p of paymentCounts"
-            class="rp-pay-row"
-          >
+          <div *ngFor="let p of paymentCounts" class="rp-pay-row">
 
             <div class="rp-pay-info">
-
-              <span class="rp-pay-label">
-                {{ p.label }}
-              </span>
+              <span class="rp-pay-label">{{ p.label }}</span>
 
               <span class="rp-pay-count">
-                {{ p.count }}
-                order{{ p.count !== 1 ? 's' : '' }}
+                {{ p.count }} order{{ p.count !== 1 ? 's' : '' }}
               </span>
-
             </div>
 
             <div class="rp-pay-bar-bg">
-
-              <div
-                class="rp-pay-bar-fill"
-                [style.width]="barWidth(p.count, totalOrders)"
-              ></div>
-
+              <div class="rp-pay-bar-fill" [style.width]="barWidth(p.count, totalOrders)"></div>
             </div>
 
           </div>
@@ -300,33 +169,20 @@
     </section>
 
     <!-- MONTHLY -->
-    <section
-      class="rp-panel rp-panel--wide"
-      *ngIf="monthlySpend.length > 0"
-    >
+    <section class="rp-panel rp-panel--wide" *ngIf="monthlySpend.length > 0">
 
-      <h2 class="rp-panel-title">
-        Monthly Revenue
-      </h2>
+      <h2 class="rp-panel-title">Monthly Revenue</h2>
 
       <div class="rp-bar-chart">
 
-        <div
-          *ngFor="let m of monthlySpend"
-          class="rp-bar-col"
-        >
+        <div *ngFor="let m of monthlySpend" class="rp-bar-col">
 
           <span class="rp-bar-val">
-            {{ m.total | number:'1.0-0' }} EGP
+            {{ m.total | number:'1.0-0' }} $
           </span>
 
           <div class="rp-bar-bg">
-
-            <div
-              class="rp-bar-fill"
-              [style.height]="barWidth(m.total, maxMonthlySpend)"
-            ></div>
-
+            <div class="rp-bar-fill" [style.height]="barWidth(m.total, maxMonthlySpend)"></div>
           </div>
 
           <span class="rp-bar-label">
@@ -340,53 +196,31 @@
     </section>
 
     <!-- ORDERS -->
-    <section
-      class="rp-panel rp-panel--wide"
-      *ngIf="orders.length > 0"
-    >
+    <section class="rp-panel rp-panel--wide" *ngIf="orders.length > 0">
 
-      <h2 class="rp-panel-title">
-        All Orders
-      </h2>
+      <h2 class="rp-panel-title">All Orders</h2>
 
       <div class="rp-orders">
 
-        <div
-          *ngFor="let o of orders; let i = index"
-          class="rp-order-row"
-        >
+        <div *ngFor="let o of orders; let i = index" class="rp-order-row">
 
           <div class="rp-order-left">
-
-            <span class="rp-order-num">
-              #{{ i + 1 }}
-            </span>
+            <span class="rp-order-num">#{{ i + 1 }}</span>
 
             <div class="rp-order-meta">
-
-              <span class="rp-order-id">
-                {{ o._id }}
-              </span>
-
-              <span class="rp-order-date">
-                {{ o.createdAt | date:'mediumDate' }}
-              </span>
-
+              <span class="rp-order-id">{{ o._id }}</span>
+              <span class="rp-order-date">{{ o.createdAt | date:'mediumDate' }}</span>
             </div>
-
           </div>
 
           <div class="rp-order-right">
 
-            <span
-              class="rp-status-pill"
-              [style.background]="getStatusColor(o.status)"
-            >
+            <span class="rp-status-pill" [style.background]="getStatusColor(o.status)">
               {{ o.status | titlecase }}
             </span>
 
             <span class="rp-order-total">
-              {{ o.totalPrice | number:'1.2-2' }} EGP
+              {{ o.totalPrice | number:'1.2-2' }} $
             </span>
 
           </div>
@@ -398,21 +232,15 @@
     </section>
 
     <!-- TRANSACTIONS -->
-    <section
-      class="rp-panel rp-panel--wide"
-      *ngIf="transactions.length > 0"
-    >
+    <section class="rp-panel rp-panel--wide" *ngIf="transactions.length > 0">
 
-      <h2 class="rp-panel-title">
-        All Transactions
-      </h2>
+      <h2 class="rp-panel-title">All Transactions</h2>
 
       <div class="rp-table-wrap">
 
         <table class="rp-table">
 
           <thead>
-
             <tr>
               <th>#</th>
               <th>Buyer</th>
@@ -421,39 +249,22 @@
               <th>Amount</th>
               <th>Date</th>
             </tr>
-
           </thead>
 
           <tbody>
 
-            <tr
-              *ngFor="let t of transactions; let i = index"
-              class="rp-table-row"
-            >
+            <tr *ngFor="let t of transactions; let i = index" class="rp-table-row">
 
-              <td class="rp-rank">
-                {{ i + 1 }}
-              </td>
-
-              <td>
-                {{ t.buyer?.userName || t.buyer?._id || '—' }}
-              </td>
-
-              <td>
-                {{ t.seller?.userName || t.seller?._id || '—' }}
-              </td>
-
-              <td>
-                {{ t.product?.title || t.product?.name || t.product?._id || '—' }}
-              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ t.buyer?.userName || t.buyer?._id || '—' }}</td>
+              <td>{{ t.seller?.userName || t.seller?._id || '—' }}</td>
+              <td>{{ t.product?.title || t.product?.name || t.product?._id || '—' }}</td>
 
               <td class="rp-revenue">
-                {{ t.price | number:'1.2-2' }} EGP
+                {{ t.price | number:'1.2-2' }} $
               </td>
 
-              <td>
-                {{ t.createdAt | date:'mediumDate' }}
-              </td>
+              <td>{{ t.createdAt | date:'mediumDate' }}</td>
 
             </tr>
 

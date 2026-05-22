@@ -18,6 +18,7 @@ export class ProductComponent implements OnInit {
   showCreateForm = false;
   userRole: string | null = null;
   selectedFile!: File;
+  userId: string = '';
   imageBaseUrl = "http://localhost:3000";
   searchKeyword: string = '';
   showMyProducts: boolean = false;
@@ -38,7 +39,8 @@ export class ProductComponent implements OnInit {
       const decoded: any = JSON.parse(atob(pureToken.split('.')[1]));
 
       this.userRole = decoded.role;
-      console.log("User Role:", this.userRole);
+      this.userId = decoded._id; //Extract the ID from the token
+      console.log("User Role:", this.userRole, "User ID:", this.userId);
 
     } catch (e) {
       console.log("Error decoding token", e);
@@ -48,15 +50,8 @@ export class ProductComponent implements OnInit {
   // ================= INIT =================
   ngOnInit(): void {
     this.extractUserRole();
-
-    if (this.userRole === 'seller') {
-      this.getMyProducts();
-    } else {
-      // buyer + admin
-      this.getProducts();
-    }
+    this.getProducts(); // Everyone sees the marketplace by default now
   }
-
   // ================= FORMS =================
   productCreate = new FormGroup({
     title: new FormControl(null, [Validators.required]),
@@ -157,7 +152,7 @@ export class ProductComponent implements OnInit {
         this.showCreateForm = false;
 
         // refresh correctly
-        if (this.userRole === 'seller') {
+       if (this.showMyProducts) {
           this.getMyProducts();
         } else {
           this.getProducts();
@@ -173,7 +168,7 @@ export class ProductComponent implements OnInit {
 
     this._ProductService.deleteProduct(id).subscribe({
       next: () => {
-        if (this.userRole === 'seller') {
+       if (this.showMyProducts) {
           this.getMyProducts();
         } else {
           this.getProducts();

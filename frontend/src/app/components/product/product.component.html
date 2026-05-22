@@ -1,4 +1,5 @@
-@if (userRole === 'admin' || userRole === 'seller') {
+@if (userRole === 'admin' || userRole === 'user') {
+
   <div class="mb-3 text-center" style="margin-top: 10px;">
 
     <button class="btn btn-success me-2"
@@ -12,110 +13,65 @@
 }
 
 @if (userRole === 'admin') {
+
   <div class="mb-3 text-center" style="margin-top: 10px;">
+
     <button class="btn btn-success" routerLink="/addAdmin">
       <i class="bi bi-plus-circle-fill"></i> Add Admin
     </button>
+
   </div>
 }
 
 @if (showCreateForm) {
+
   <div class="card p-3 mb-3 mx-auto col-md-6">
+
     <form [formGroup]="productCreate" (ngSubmit)="sendData()">
 
-      <div class="mb-2">
-        <input
-          type="text"
-          placeholder="Title"
-          formControlName="title"
-          class="form-control"
-        />
-      </div>
+      <input type="text" placeholder="Title" formControlName="title" class="form-control mb-2" />
 
-      <div class="mb-2">
-        <input
-          type="text"
-          placeholder="Brand"
-          formControlName="brand"
-          class="form-control"
-        />
-      </div>
+      <input type="text" placeholder="Brand" formControlName="brand" class="form-control mb-2" />
 
-      <div class="mb-2">
-        <input
-          type="text"
-          placeholder="Description"
-          formControlName="description"
-          class="form-control"
-        />
-      </div>
+      <input type="text" placeholder="Description" formControlName="description" class="form-control mb-2" />
 
-      <div class="mb-2">
-        <input
-          type="number"
-          placeholder="Price"
-          formControlName="price"
-          class="form-control"
-        />
-      </div>
+      <input type="number" placeholder="Price" formControlName="price" class="form-control mb-2" />
 
-      <div class="mb-2">
-        <input
-          type="number"
-          placeholder="Quantity"
-          formControlName="quantity"
-          class="form-control"
-        />
-      </div>
+      <input type="number" placeholder="Quantity" formControlName="quantity" class="form-control mb-2" />
 
-      <div class="mb-2">
+      <input type="file"
+             class="form-control mb-2"
+             accept="image/*"
+             (change)="onFileSelected($event)" />
 
-        <label class="form-label">
-          Upload Product Image
-        </label>
+      <button type="submit"
+              class="btn btn-primary"
+              [disabled]="!productCreate.valid">
 
-        <input
-          type="file"
-          class="form-control"
-          accept="image/*"
-          (change)="onFileSelected($event)"
-        >
-
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="!productCreate.valid">
-
-        <i class="bi bi-save-fill"></i> Save Product
+        Save Product
 
       </button>
 
     </form>
+
   </div>
 }
 
+<!-- SEARCH -->
 <div class="container mb-3">
 
   <div class="row justify-content-center">
 
     <div class="col-md-6 d-flex">
 
-      <input
-        type="text"
-        class="form-control me-2"
-        placeholder="Search by name or brand..."
-        [(ngModel)]="searchKeyword"
-        (input)="search()"
-      />
+      <input type="text"
+             class="form-control me-2"
+             placeholder="Search..."
+             [(ngModel)]="searchKeyword"
+             (input)="search()" />
 
-      <button
-        class="btn btn-primary"
-        (click)="search()">
-
+      <button class="btn btn-primary" (click)="search()">
         Search
-
       </button>
 
     </div>
@@ -124,102 +80,62 @@
 
 </div>
 
-<div class='container-fluid'>
+<!-- PRODUCTS -->
+<div class="container-fluid">
 
   <div class="row">
 
     @for (product of products; track $index) {
 
-      <div
-        class="col-md-3 col-sm-4 col-6"
-        style="margin-top: 10px;"
-      >
+      <div class="col-md-3 col-sm-4 col-6 mt-2">
 
-        <div
-          class="card h-100 w-75"
-          style="border-radius: 30px;"
-        >
+        <div class="card h-100 w-75">
 
-          <img
-            [src]="imageBaseUrl + product.image"
-            class="mx-auto img-thumbnail"
-            width="200"
-            height="100"
-          />
+          <img [src]="imageBaseUrl + product.image"
+               class="img-thumbnail mx-auto"
+               width="200" />
 
           <div class="card-body text-center">
 
-            <h5 class="card-title font-weight-bold">
-              {{ product.title }}
-            </h5>
+            <h5>{{ product.title }}</h5>
 
-            <p class="card-text">
-              ${{ product.price }}
-            </p>
+            <p>${{ product.price }}</p>
 
-            <p>
-              Stock: {{ product.stock }}
-            </p>
+            <p>Stock: {{ product.stock }}</p>
 
             @if (product.stock === 0) {
-
-              <p style="color:red;">
-                Out of stock
-              </p>
-
+              <p class="text-danger">Out of stock</p>
             }
 
-            <a
-              class="btn details px-auto"
-              [routerLink]="['/product', product._id]"
-            >
-
+            <a class="btn btn-info"
+               [routerLink]="['/product', product._id]">
               View Details
-
             </a>
 
             <br />
 
-            @if (userRole === 'buyer') {
-
-              <a
-                href="#"
-                class="btn cart px-auto mt-2"
-                (click)="addToCart(product, $event)"
-                [class.disabled]="product.stock === 0"
-              >
-
+            @if (product.owner?.toString() !== userId && product.stock > 0) {
+              <a class="btn btn-success mt-2"
+                 (click)="addToCart(product, $event)">
                 Add to Cart
-
               </a>
-
             }
 
-            @if (userRole === 'admin' || userRole === 'seller') {
+            @if (userRole === 'admin' || product.owner?.toString() === userId) {
 
-              <div class="mt-2 d-flex justify-content-center">
+              <div class="mt-2">
 
-                <button
-                  (click)="goToUpdatePage(product._id)"
-                  class="btn btn-warning me-2"
-                >
-
-                  <i class="bi bi-pencil-square"></i>
+                <button (click)="goToUpdatePage(product._id)"
+                        class="btn btn-warning me-2">
                   Edit
-
                 </button>
 
-                <button
-                  (click)="deleteProduct(product._id)"
-                  class="btn btn-danger"
-                >
-
-                  <i class="bi bi-trash3-fill"></i>
-
+                <button (click)="deleteProduct(product._id)"
+                        class="btn btn-danger">
+                  Delete
                 </button>
 
               </div>
-
             }
 
           </div>

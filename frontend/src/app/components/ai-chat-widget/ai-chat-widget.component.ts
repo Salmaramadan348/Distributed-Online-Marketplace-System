@@ -32,8 +32,8 @@ export class AiChatWidgetComponent {
     'What is the cheapest product?',
     'What are the details of this product?',
     'How do I checkout?',
-    'What can a seller do on this website?',
-    'What can a buyer do on this website?'
+    'How do I sell an item on this website?',
+    'How do I buy an item on this website?'
   ];
 
   constructor(private aiService: AiAssistantService) {}

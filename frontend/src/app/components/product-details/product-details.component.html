@@ -1,15 +1,19 @@
-
 <div class="container mt-5" *ngIf="product; else noProduct">
   <div class="row">
+
+    <!-- IMAGE SECTION (only improved) -->
     <div class="col-md-6 mb-4">
-      <img [src]="product.image || 'assets/images/default.jpg'" 
-           alt="Product" class="img-fluid rounded mb-3 product-image">
+      <div class="text-center">
+        <img [src]="imageBaseUrl + product.image"
+     alt="Product"
+     class="img-fluid img-thumbnail rounded mb-3 product-image">
+      </div>
     </div>
 
     <div class="col-md-6">
-      <h2 class="mb-3">{{ product.title }}</h2> 
+      <h2 class="mb-3">{{ product.title }}</h2>
       <p class="text-muted mb-4">SKU: {{ product._id }}</p>
-      
+
       <div class="mb-3">
         <span class="h4 me-2">${{ product.price }}</span>
         <span [class]="product.stock > 0 ? 'text-success' : 'text-danger'">
@@ -18,14 +22,17 @@
       </div>
 
       <p class="mb-4">{{ product.description }}</p>
+@if (product.owner?.toString() !== userId && product.stock > 0) {
+     <button class="btn btn-primary"
+        (click)="addToCart(product, $event)"
+        >
 
-      <button class="btn btn-primary" 
-              (click)="addToCart(product, $event)" 
-              [disabled]="product.stock === 0">
-        <i class="bi bi-cart-plus"></i> 
-        {{ product.stock > 0 ? 'Add to Cart' : 'Out of Stock' }}
-      </button>
+  <i class="bi bi-cart-plus"></i>
+  Add to Cart
+
+</button>}
     </div>
+
   </div>
 </div>
 

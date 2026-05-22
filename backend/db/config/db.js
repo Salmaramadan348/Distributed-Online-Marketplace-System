@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 const uri = "mongodb+srv://salmaramadan348_db_user:H3ez4FNjg9om1oWh@cluster0.kx5l9yp.mongodb.net";
-
 const connections = {
   userDB: mongoose.createConnection(`${uri}/userDB`),
   productDB: mongoose.createConnection(`${uri}/productDB`),

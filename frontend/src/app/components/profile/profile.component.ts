@@ -98,17 +98,31 @@ getProfile() {
   });
 }
 
-  updateProfile() {
-    const userId = this.user._id;
+updateProfile() {
 
-    this.userService.updateUser(userId, this.editData).subscribe({
-      next: (res) => {
-        console.log("Updated:", res);
+  const userId = this.user._id;
 
-        this.user = res.updatedUser;
-        this.showEdit = false;
-      },
-      error: (err) => console.log(err)
-    });
-  }
+  this.userService.updateUser(userId, this.editData).subscribe({
+    next: (res) => {
+
+      console.log("Updated:", res);
+
+      this.user = res.updatedUser;
+
+      this.showEdit = false;
+    },
+
+    error: (err) => console.log(err)
+  });
+}
+openEdit() {
+
+  this.editData = {
+    userName: this.user.userName,
+    email: this.user.email
+  };
+  console.log("Edit Data:", this.editData);
+
+  this.showEdit = true;
+}
 }

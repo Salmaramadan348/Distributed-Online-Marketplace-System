@@ -4,42 +4,42 @@
 
   <div class="header-links">
 
-    <a routerLink="home" routerLinkActive="active">Home</a>
-
-    <a routerLink="product" routerLinkActive="active">Product</a>
-
-    <!-- ADMIN ONLY -->
-    @if(userRole === 'admin') {
-      <a routerLink="/report" routerLinkActive="active">
-        Report
-      </a>
-    }
-
-    <!-- BUYER ONLY -->
-    @if(userRole === 'buyer') {
-      <a routerLink="orderDetails" routerLinkActive="active">
-        Orders
-      </a>
-    }
-
-    <a routerLink="about" routerLinkActive="active">About</a>
-
-    <a routerLink="profile" routerLinkActive="active">Profile</a>
-
-    <a routerLink="chat" routerLinkActive="active">
-      <i class="bi bi-chat-dots-fill"></i>
-    </a>
-
-    <!-- CART (BUYER ONLY) -->
-    @if(userRole === 'buyer') {
-      <a routerLink="cart" routerLinkActive="active">
-        <i class="bi bi-cart-check-fill"></i>
-      </a>
-    }
-
-    <!-- LOGIN / LOGOUT SECTION -->
+    <!-- 🔐 LOGGED IN USERS ONLY -->
     @if(isLoggedIn) {
 
+      <a routerLink="home" routerLinkActive="active">Home</a>
+
+      <a routerLink="product" routerLinkActive="active">Product</a>
+
+      <!-- ADMIN ONLY -->
+      @if(userRole === 'admin') {
+        <a routerLink="/report" routerLinkActive="active">
+          Report
+        </a>
+      }
+
+      <!-- USER ONLY -->
+      @if(userRole === 'user') {
+        <a routerLink="orderDetails" routerLinkActive="active">
+          Orders
+        </a>
+      }
+
+      <a routerLink="about" routerLinkActive="active">About</a>
+
+      <a routerLink="profile" routerLinkActive="active">Profile</a>
+
+      <a routerLink="chat" routerLinkActive="active">
+        <i class="bi bi-chat-dots-fill"></i>
+      </a>
+
+      @if(userRole === 'user') {
+        <a routerLink="cart" routerLinkActive="active">
+          <i class="bi bi-cart-check-fill"></i>
+        </a>
+      }
+
+      <!-- USER INFO -->
       <span style="color: white; padding: 5px 15px;">
         {{ userRole }}
       </span>
@@ -48,11 +48,14 @@
         SIGN OUT
       </button>
 
-    } @else {
+    }
 
-      <button class="btn" routerLink="login">
+    <!-- 🔓 NOT LOGGED IN -->
+    @else {
+
+      <a routerLink="login" class="btn">
         SIGN IN
-      </button>
+      </a>
 
     }
 

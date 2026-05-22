@@ -34,9 +34,7 @@ export class RegisterComponent {
     password: new FormControl(null, [
       Validators.required
     ]),
-
-    // 🔥 الجديد
-    role: new FormControl('buyer', Validators.required)
+ 
   });
 
   sendData() {

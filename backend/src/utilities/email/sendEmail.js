@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
 
   auth: {
     user: "salmaramadan348@gmail.com",
-    pass: "cuhk fdoq iikg guwk", //from google app password, must enable 2-way verification
+    pass: "ybhb qiec fqjg fiwr", 
   },
   tls:{
      rejectUnauthorized:false

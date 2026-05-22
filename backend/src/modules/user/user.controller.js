@@ -2,6 +2,7 @@ import bcrypt from"bcrypt";
 import { userModel}from "../../../db/models/user.model.js"
 import jwt from"jsonwebtoken"
 import { productModel } from "../../../db/models/product.model.js";
+import { sendMail } from "../../utilities/email/sendEmail.js";
 
 const emailsAdmin=["salmaramadan348@gmail.com","salma.ramadan.mohammed@gmail.com"]
 const isAdmin = (email) => emailsAdmin.includes(email);
@@ -83,11 +84,11 @@ const deleteUser=async (req,res)=>{
 
 const register = async (req, res) => {
   try {
-    const { email, password, role: inputRole } = req.body;
+    const { email, password } = req.body;
 
     const hashedPassword = bcrypt.hashSync(password, 8);
 
-    let role = inputRole || "buyer";
+    let role = "user";
 
     if (emailsAdmin.includes(email)) {
       role = "admin";
@@ -96,15 +97,20 @@ const register = async (req, res) => {
     const userData = {
       ...req.body,
       password: hashedPassword,
-      role
+      role,
+      isConfirmed: false
     };
 
     const addedUser = await userModel.create(userData);
 
+    sendMail(email).catch((error) => {
+      console.error("sendMail failed:", error?.message ?? error);
+    });
+
     addedUser.password = undefined;
 
     return res.status(201).json({
-      message: "register is successful",
+      message: "register is successful, check your email",
       addedUser
     });
 
@@ -217,9 +223,9 @@ const getMe = async (req, res) => {
       user: {
         _id: user._id,
         email: user.email,
+        userName: user.userName,
         role: user.role,
 
-        // 🔥 بدل IDs → full products
         purchasedItems: purchasedProducts,
         soldItems: soldProducts,
 
