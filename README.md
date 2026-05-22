@@ -15,10 +15,10 @@ Full-stack marketplace platform with a distributed MongoDB setup, real-time chat
 - Static images are served from backend/src/utilities/images at /images.
 
 ## Diagrams
-![Application-Level Protocol](backend/diagrams/Application-Level%20Protocol.jpeg)
 ![Distributed Database Model](backend/diagrams/Distributed%20Database%20Model.jpeg)
 ![Layered Architecture](backend/diagrams/layered%20Architecture.jpeg)
 ![Use Case Diagram](backend/diagrams/useCase%20Diagram.jpeg)
+![Application-Level Protocol](backend/diagrams/Application-Level%20Protocol.jpeg)
 
 ## Tech Stack
 - Backend: Node.js, Express 5, Mongoose, Socket.IO, JWT, Nodemailer
@@ -68,5 +68,4 @@ Full-stack marketplace platform with a distributed MongoDB setup, real-time chat
 - Frontend: npm start, npm run build, npm test
 
 ## Notes
-- The database connection string is currently defined in backend/db/config/db.js. For production, move it to environment variables.
-- The AI assistant requires HF_API_KEY; HF_MODEL_ID is optional.
+- Set HF_API_KEY in your environment. Do not commit secrets.
