@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { SocketClientService } from './socket-client.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class AuthService {
   private roleSubject = new BehaviorSubject<string | null>(this.getRole());
   role$ = this.roleSubject.asObservable();
 
-  constructor(private _HttpClient: HttpClient) {}
+  constructor(private socketClient: SocketClientService) {}
 
   setRole(role: string | null) {
     this.roleSubject.next(role);
@@ -19,6 +19,8 @@ export class AuthService {
     if (role === null) {
       localStorage.removeItem('Authorization');
     }
+
+    this.socketClient.syncAuthFromStorage();
   }
 
   getRole(): string | null {
@@ -37,10 +39,10 @@ export class AuthService {
   }
 
   register(data: any): Observable<any> {
-    return this._HttpClient.post('http://localhost:3000/user/register', data);
+    return this.socketClient.request('user:register', data);
   }
 
   login(data: any): Observable<any> {
-    return this._HttpClient.post('http://localhost:3000/user/login', data);
+    return this.socketClient.request('user:login', data);
   }
 }

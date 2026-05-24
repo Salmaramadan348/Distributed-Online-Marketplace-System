@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { SocketClientService } from './socket-client.service';
 
 export interface AiAnswerResponse {
   answer: string;
@@ -10,11 +10,9 @@ export interface AiAnswerResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AiAssistantService {
-  private apiUrl = 'http://localhost:3000';
-
-  constructor(private http: HttpClient) {}
+  constructor(private socketClient: SocketClientService) {}
 
   ask(question: string): Observable<AiAnswerResponse> {
-    return this.http.post<AiAnswerResponse>(`${this.apiUrl}/ai/ask`, { question });
+    return this.socketClient.request<AiAnswerResponse>('ai:ask', { question });
   }
 }

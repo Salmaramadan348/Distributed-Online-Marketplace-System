@@ -15,6 +15,14 @@ import { ReportRoutes } from "./src/modules/report/report.routes.js";
 import { ChatRoutes } from "./src/modules/chat/chat.routes.js";
 import { AiRoutes } from "./src/modules/ai/ai.routes.js";
 import { chatSocket } from "./src/modules/chat/chat.socketio.js";
+import { productSocket } from "./src/modules/product/product.socket.js";
+import { cartSocket } from "./src/modules/cart/cart.socket.js";
+import { orderSocket } from "./src/modules/order/order.socket.js";
+import { userSocket } from "./src/modules/user/user.socket.js";
+import { walletSocket } from "./src/modules/wallet/wallet.socket.js";
+import { reportSocket } from "./src/modules/report/report.socket.js";
+import { transactionSocket } from "./src/modules/transaction/transaction.socket.js";
+import { aiSocket } from "./src/modules/ai/ai.socket.js";
 import path from "path";
 
 dotenv.config();
@@ -31,18 +39,34 @@ const io = new Server(server, {
 
 // JWT auth middleware for socket
 io.use((socket, next) => {
-  const token = socket.handshake.auth.token;
-  if (!token) return next(new Error("Unauthorized"));
+  const rawToken = socket.handshake.auth?.token;
+  if (!rawToken) {
+    socket.user = null;
+    return next();
+  }
+
+  const token = rawToken.startsWith("Bearer ")
+    ? rawToken.slice(7)
+    : rawToken;
+
   try {
     socket.user = jwt.verify(token, "Day4");
-    next();
+    return next();
   } catch {
-    next(new Error("Invalid token"));
+    return next(new Error("Invalid token"));
   }
 });
 
 // Attach chat socket handlers
 chatSocket(io);
+productSocket(io);
+cartSocket(io);
+orderSocket(io);
+userSocket(io);
+walletSocket(io);
+reportSocket(io);
+transactionSocket(io);
+aiSocket(io);
 
 app.use(express.json())
 

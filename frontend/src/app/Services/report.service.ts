@@ -1,23 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { SocketClientService } from './socket-client.service';
 
 @Injectable({
     providedIn: 'root'
 })
     export class ReportService {
 
-    private baseUrl = 'http://localhost:3000/report';
-
-    constructor(private _HttpClient: HttpClient) {}
-
-    private getHeaders(): HttpHeaders {
-
-        const token = localStorage.getItem("Authorization") || '';
-
-        return new HttpHeaders().set('Authorization', token);
-    }
+    constructor(private socketClient: SocketClientService) {}
 
     isAdmin(): boolean {
 
@@ -28,16 +18,6 @@ import { catchError } from 'rxjs/operators';
 
     getSummaryReport(): Observable<any> {
 
-    const token = localStorage.getItem('Authorization');
-
-    const headers = new HttpHeaders().set(
-        'Authorization',
-        token || ''
-    );
-
-    return this._HttpClient.get(
-        `${this.baseUrl}/summary`,
-        { headers }
-    );
+    return this.socketClient.request('report:summary');
     }
     }

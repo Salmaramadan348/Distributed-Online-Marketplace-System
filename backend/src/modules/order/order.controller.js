@@ -5,6 +5,7 @@ import { transactionModel } from "../../../db/models/transaction.model.js";
 import { inventoryModel } from "../../../db/models/inventory.model.js";
 import { userModel } from "../../../db/models/user.model.js";
 import { productModel } from "../../../db/models/product.model.js";
+import { isAdmin } from "../user/user.controller.js";
 
 const createOrder = async (req, res) => {
   try {
